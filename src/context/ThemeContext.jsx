@@ -34,7 +34,7 @@ export const ThemeProvider = ({ children }) => {
 
     const [timeFormat, setTimeFormat] = useState(() => {
         const saved = localStorage.getItem('winfolio-time-format')
-        return saved || '24' // Default to 24h
+        return saved || '12' // Default to 12h
     })
 
     useEffect(() => {

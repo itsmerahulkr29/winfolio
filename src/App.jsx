@@ -126,7 +126,7 @@ const HomeScreen = ({ onOpenApp }) => {
         onClick={() => onOpenApp('call')}
       >
         <div className="profile-tile">
-          <img src="/profile.jpg" alt="Rahul Kumar" className="profile-image" />
+          <img src="profile.jpg" alt="Rahul Kumar" className="profile-image" />
           <div className="profile-info">
             <div className="profile-name">Rahul Kumar</div>
             <div className="profile-title">Full Stack Developer</div>
@@ -169,11 +169,6 @@ const HomeScreen = ({ onOpenApp }) => {
         <div className="project-tile">
           <Icons.Code />
           <div className="tile-large-title" style={{ marginTop: '8px' }}>Projects</div>
-          <div className="project-tech">
-            <span>URL Shortener</span>
-            <span>Dev Drop</span>
-            <span>Algo Viz</span>
-          </div>
         </div>
       </Tile>
 

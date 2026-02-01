@@ -29,7 +29,7 @@ const CallApp = ({ onBack }) => {
             <AppHeader title="Contact" onBack={onBack} />
             <div className="contact-header">
                 <div className="contact-avatar">
-                    <img src="/profile.jpg" alt="Rahul Kumar" className="contact-avatar-img" />
+                    <img src="profile.jpg" alt="Rahul Kumar" className="contact-avatar-img" />
                 </div>
                 <h1 className="contact-name">{contact.name}</h1>
                 <p className="contact-title">{contact.title}</p>

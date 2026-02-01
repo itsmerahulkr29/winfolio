@@ -3,81 +3,88 @@ import AppHeader from '../components/AppHeader'
 
 const Calculator = ({ onBack }) => {
     const [display, setDisplay] = useState('0')
-    const [previousValue, setPreviousValue] = useState(null)
-    const [operator, setOperator] = useState(null)
-    const [waitingForOperand, setWaitingForOperand] = useState(false)
 
     const inputDigit = (digit) => {
-        if (waitingForOperand) {
+        if (display === '0') {
             setDisplay(digit)
-            setWaitingForOperand(false)
         } else {
-            setDisplay(display === '0' ? digit : display + digit)
+            setDisplay(display + digit)
         }
     }
 
     const inputDecimal = () => {
-        if (waitingForOperand) {
-            setDisplay('0.')
-            setWaitingForOperand(false)
-            return
-        }
-        if (!display.includes('.')) {
+        const parts = display.split(' ')
+        const current = parts[parts.length - 1]
+        if (!current.includes('.')) {
             setDisplay(display + '.')
         }
     }
 
     const clear = () => {
         setDisplay('0')
-        setPreviousValue(null)
-        setOperator(null)
-        setWaitingForOperand(false)
     }
 
-    const performOperation = (nextOperator) => {
-        const inputValue = parseFloat(display)
-
-        if (previousValue === null) {
-            setPreviousValue(inputValue)
-        } else if (operator) {
-            const result = calculate(previousValue, inputValue, operator)
-            setDisplay(String(result))
-            setPreviousValue(result)
-        }
-
-        setWaitingForOperand(true)
-        setOperator(nextOperator)
-    }
-
-    const calculate = (prev, next, op) => {
-        switch (op) {
-            case '+': return prev + next
-            case '-': return prev - next
-            case '×': return prev * next
-            case '÷': return next !== 0 ? prev / next : 'Error'
-            case '%': return prev % next
-            default: return next
+    const performOperation = (op) => {
+        // Add operator with spaces
+        // If last char is operator (with spaces), replace it? 
+        // Logic: if ending with space, we might be waiting.
+        // Let's simplified: append.
+        // check if trailing operator
+        if (display.endsWith(' ')) {
+            // replace op
+            const newDisp = display.trimEnd().slice(0, -1) + ` ${op} `
+            setDisplay(newDisp)
+        } else {
+            setDisplay(display + ` ${op} `)
         }
     }
 
-    const handleEquals = () => {
-        if (!operator || previousValue === null) return
+    const calculate = () => {
+        try {
+            // Replace visual operators with JS operators
+            let expression = display.replace(/×/g, '*').replace(/÷/g, '/')
+            // Sanitize: allow only numbers, operators, dots, spaces, parens
+            if (/[^0-9+\-*/().\s%]/.test(expression)) return
 
-        const inputValue = parseFloat(display)
-        const result = calculate(previousValue, inputValue, operator)
+            // Eval is safe here due to strict input control from buttons
+            // eslint-disable-next-line no-new-func
+            const result = new Function('return ' + expression)()
 
-        setDisplay(String(result))
-        setPreviousValue(null)
-        setOperator(null)
-        setWaitingForOperand(true)
+            // Format result
+            const formatted = String(Math.round(result * 1000000) / 1000000)
+            setDisplay(formatted)
+        } catch (e) {
+            setDisplay('Error')
+        }
     }
 
     const toggleSign = () => {
-        setDisplay(String(parseFloat(display) * -1))
+        // Find last number
+        // This is complex with expression view.
+        // Let's just wrap current display in -1 * (...) 
+        // Or simplified: Just clear/error? 
+        // User asked for "toggle sign".
+        // Let's try to find the last operand.
+        // Splits by space.
+        const parts = display.split(' ')
+        if (parts.length > 0) {
+            const last = parts.pop()
+            if (!isNaN(last)) {
+                const toggled = String(parseFloat(last) * -1)
+                setDisplay([...parts, toggled].join(' '))
+            }
+        }
     }
 
     const percentage = () => {
-        setDisplay(String(parseFloat(display) / 100))
+        const parts = display.split(' ')
+        if (parts.length > 0) {
+            const last = parts.pop()
+            if (!isNaN(last)) {
+                const percent = String(parseFloat(last) / 100)
+                setDisplay([...parts, percent].join(' '))
+            }
+        }
     }
 
     const buttons = [
@@ -99,7 +106,7 @@ const Calculator = ({ onBack }) => {
         { label: '+', action: () => performOperation('+'), type: 'operator' },
         { label: '0', action: () => inputDigit('0'), type: 'digit', wide: true },
         { label: '.', action: inputDecimal, type: 'digit' },
-        { label: '=', action: handleEquals, type: 'operator' },
+        { label: '=', action: calculate, type: 'operator' },
     ]
 
     return (

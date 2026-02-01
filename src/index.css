@@ -59,7 +59,7 @@
 
 html,
 body {
-  height: 100%;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -750,13 +750,13 @@ body {
    Calculator App Styles
    ======================================== */
 .calculator-app {
-  background: #1c1c1c;
+  background: var(--bg-primary);
 }
 
 .calc-display {
   padding: 20px;
   text-align: right;
-  background: #1c1c1c;
+  background: var(--bg-primary);
   min-height: 100px;
   display: flex;
   flex-direction: column;
@@ -766,7 +766,7 @@ body {
 .calc-value {
   font-size: 48px;
   font-weight: 200;
-  color: white;
+  color: var(--text-primary);
   word-break: break-all;
 }
 
@@ -774,7 +774,7 @@ body {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  background: #333;
+  background: var(--bg-primary);
   flex: 1;
 }
 
@@ -787,21 +787,21 @@ body {
 }
 
 .calc-btn.digit {
-  background: #3a3a3a;
-  color: white;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .calc-btn.digit:hover {
-  background: #4a4a4a;
+  opacity: 0.8;
 }
 
 .calc-btn.function {
-  background: #505050;
-  color: white;
+  background: rgba(128, 128, 128, 0.2);
+  color: var(--text-primary);
 }
 
 .calc-btn.function:hover {
-  background: #606060;
+  background: rgba(128, 128, 128, 0.4);
 }
 
 .calc-btn.operator {
