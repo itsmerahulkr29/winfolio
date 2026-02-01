@@ -130,7 +130,6 @@ const HomeScreen = ({ onOpenApp }) => {
           <div className="profile-info">
             <div className="profile-name">Rahul Kumar</div>
             <div className="profile-title">Full Stack Developer</div>
-            <div className="profile-contact">B.Tech CSE</div>
           </div>
         </div>
       </Tile>
